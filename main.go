@@ -7,16 +7,6 @@ import (
 	"os"
 )
 
-// aws up
-func awsUp() {
-	fmt.Println("AWS UP")
-}
-
-// aws down
-func awsDown() {
-	fmt.Println("AWS Down")
-}
-
 // gcp up
 func gcpUp() {
 	fmt.Println("GCP UP")

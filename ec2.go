@@ -15,6 +15,34 @@ func check(e error) {
 	}
 }
 
+func awsUp() {
+
+}
+
+func awsDown() {
+
+	svc := ec2.New(session.New())
+
+	params := &ec2.TerminateInstancesInput{
+		InstanceIds: []*string{ // Required
+			aws.String("i-8a743c00"), // Required
+			// More values...
+		},
+		DryRun: aws.Bool(false),
+	}
+	resp, err := svc.TerminateInstances(params)
+
+	if err != nil {
+		// Print the error, cast err to awserr.Error to get the Code and
+		// Message from an error.
+		fmt.Println(err.Error())
+		return
+	}
+
+	// Pretty-print the response data.
+	fmt.Println(resp)
+}
+
 func awsList() {
 
 	svc := ec2.New(session.New())
