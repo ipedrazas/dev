@@ -16,7 +16,71 @@ func check(e error) {
 }
 
 func awsUp() {
+	svc := ec2.New(session.New())
 
+	runResult, err := svc.RunInstances(&ec2.RunInstancesInput{
+		// An Amazon Linux AMI ID for t2.micro instances in the us-west-2 region
+		ImageId:      aws.String("ami-b19e0fc2"),
+		InstanceType: aws.String("t2.micro"),
+		MinCount:     aws.Int64(1),
+		MaxCount:     aws.Int64(1),
+	})
+
+	params := &ec2.RunInstancesInput{
+		ImageId:  aws.String("ami-b19e0fc2"), // Required
+		MaxCount: aws.Int64(1),               // Required
+		MinCount: aws.Int64(1),               // Required
+		BlockDeviceMappings: []*ec2.BlockDeviceMapping{
+			{ // Required
+				DeviceName: aws.String("/dev/sda1"),
+				Ebs: &ec2.EbsBlockDevice{
+					DeleteOnTermination: aws.Bool(true),
+					Encrypted:           aws.Bool(true),
+					Iops:                aws.Int64(1),
+					SnapshotId:          aws.String("snap-506d62bc"),
+					VolumeSize:          aws.Int64(10),
+					VolumeType:          aws.String("GP2"),
+				},
+				NoDevice:    aws.String("String"),
+				VirtualName: aws.String("String"),
+			},
+			// More values...
+		},
+
+		DisableApiTermination: aws.Bool(true),
+		DryRun:                aws.Bool(true),
+		EbsOptimized:          aws.Bool(true),
+
+		InstanceInitiatedShutdownBehavior: aws.String("ShutdownBehavior"),
+		InstanceType:                      aws.String("t2.nano"),
+		Monitoring: &ec2.RunInstancesMonitoringEnabled{
+			Enabled: aws.Bool(false), // Required
+		},
+		NetworkInterfaces: []*ec2.InstanceNetworkInterfaceSpecification{
+			{ // Required
+				AssociatePublicIpAddress: aws.Bool(true),
+				DeleteOnTermination:      aws.Bool(true),
+				Description:              aws.String("String"),
+				DeviceIndex:              aws.Int64(1),
+			},
+			// More values...
+		},
+		SecurityGroupIds: []*string{
+			aws.String("sg-f7c66d90"), // Required
+			// More values...
+		},
+	}
+	resp, err := svc.RunInstances(params)
+
+	if err != nil {
+		// Print the error, cast err to awserr.Error to get the Code and
+		// Message from an error.
+		fmt.Println(err.Error())
+		return
+	}
+
+	// Pretty-print the response data.
+	fmt.Println(resp)
 }
 
 func awsDown() {

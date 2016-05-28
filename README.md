@@ -1,4 +1,4 @@
-# dev
+# devc
 
 Little tool to manage remote dev machines in the cloud
 
@@ -15,12 +15,24 @@ Anyway, this tool helps me with that workflow. To start a new machine, you will 
 
 To destroy all your machines you just have to do:
 
-		devc down
+		devc down aws
 
 
 
 Before `devc` I had to do things like this:
 
-            gcloud compute   instances create dev01    --zone europe-west1-c   --preemptible  --machine-type "n1-standard-4"    --subnet "default"     --tags "dev-box"    --image "/ubuntu-os-cloud/ubuntu-1604-xenial-v20160516a"   --description "remote development"  --boot-disk-size "100"       --boot-disk-type "pd-standard"     --boot-disk-device-name "instance-1"
+            gcloud compute   instances create dev01    --zone europe-west1-c
+            --preemptible  --machine-type "n1-standard-4"    --subnet "default"
+            --tags "dev-box"    --image "/ubuntu-os-cloud/ubuntu-1604-xenial-v20160516a"
+            --description "remote development"  --boot-disk-size "100"
+            --boot-disk-type "pd-standard"     --boot-disk-device-name "instance-1"
 
+
+## Setup
+
+The tool assumes that you have your amazon credentials in the `~/.aws/credentials` file, you might need to export the region if you don't have a config file
+
+        [default]
+        output = json
+        region = eu-west-1
 
